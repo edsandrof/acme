@@ -29,11 +29,22 @@ public class Main {
 
         Cliente cliente1 = new Cliente(1, "Cliente de Teste");
         Cliente cliente2 = new Cliente(2, "Consumidor de Teste");
+        Cliente cliente3 = new Cliente(3, "Consumidor de Produção");
+
+        LocalDateTime hoje = LocalDateTime.now();
 
         List<Pagamento> pagamentos = Arrays.asList(
-                new Pagamento(1, list1, LocalDateTime.now(), cliente1),
-                new Pagamento(2, list2, LocalDateTime.now().minusDays(1L), cliente2),
-                new Pagamento(3, list2, LocalDateTime.now().minusMonths(1), cliente2));
+                new Pagamento(1, list1, hoje, cliente1),
+                new Pagamento(2, list2, hoje.minusDays(1L), cliente2),
+                new Pagamento(3, list2, hoje.minusMonths(1), cliente2));
+
+        BigDecimal custoAssinatura = new BigDecimal("99.98");
+
+        Collection<Assinatura> assinaturas = Arrays.asList(
+                new Assinatura(1, custoAssinatura, hoje.minusMonths(3), cliente1),
+                new Assinatura(2, custoAssinatura, hoje.minusMonths(6L), hoje.minusMonths(2L), cliente2),
+                new Assinatura(3, custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), cliente3)
+        );
 
         // 1 OK
 
@@ -46,32 +57,36 @@ public class Main {
 //        qualClienteGastouMais(pagamentos); // 7
 //        quantoFoiFaturadoNoMes(pagamentos, LocalDateTime.now()); // 8
 //        criar3AssinaturasDe99_98Sendo2Encerradas(); // 9 OK
-//        imprimirTempoEmMesesAssinauturaAtiva(assinaturas); // 10 OK
-//        imprimirTempoEntreBeginEndAssinaturas(assinaturas);// 11
+        imprimirTempoEmMesesAssinauturaAtiva(assinaturas); // 10 OK
+        imprimirTempoEntreBeginEndAssinaturas(assinaturas); // 11 OK
 //        calcularValorPagoEmCadaAssinaturaAteAgora(assinaturas); // 12
     }
 
     private static void imprimirTempoEntreBeginEndAssinaturas(Collection<Assinatura> assinaturas) {
+        System.out.println("11 - Imprima o tempo de meses entre o start e end de todas assinaturas:");
+        FormatadorPagamento formatador = new FormatadorPagamento(new Locale("pt", "BR"));
+
+        LocalDateTime hoje = LocalDateTime.now();
+
+        assinaturas.stream()
+                .map(assinatura -> ChronoUnit.MONTHS.between(assinatura.getBegin(), assinatura.getEnd().orElse(hoje)))
+                .forEach(meses -> System.out.println("\t> Assinatura tem " + meses + " meses"));
     }
 
     private static void calcularValorPagoEmCadaAssinaturaAteAgora(Collection<Assinatura> assinaturas) {
     }
 
     private static void imprimirTempoEmMesesAssinauturaAtiva(Collection<Assinatura> assinaturas) {
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("++++++++++++ Tempo Assinatura Ativa ++++++++++++++");
-        assinaturas.stream().filter(assinatura -> assinatura.getEnd() == null).limit(1).forEach(a -> {
-            long months = ChronoUnit.MONTHS.between(a.getBegin(), LocalDateTime.now());
-            System.out.println(String.format(Locale.getDefault(), "Tempo em meses da assinatura ativa: %d", months));
-        });
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
-    }
+        System.out.println("10 - Imprima o tempo em meses de alguma assinatura ainda ativa:");
+        LocalDateTime hoje = LocalDateTime.now();
 
-    private static Collection<Assinatura> criar3AssinaturasDe99_98Sendo2Encerradas() {
-        return Arrays.asList(
-                new Assinatura(1, new BigDecimal("99.98"), LocalDateTime.now(), null),
-                new Assinatura(2, new BigDecimal("99.98"), LocalDateTime.now(), LocalDateTime.now(), null),
-                new Assinatura(3, new BigDecimal("99.98"), LocalDateTime.now(), LocalDateTime.now(), null));
+        long meses = assinaturas.stream()
+                .filter(assinatura -> assinatura.getEnd().isEmpty())
+                .map(a -> ChronoUnit.MONTHS.between(a.getBegin(), a.getEnd().orElse(hoje)))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Assinatura ativa não encontrada!"));
+
+        System.out.printf("\t> Assinatura ativa há %d meses%n", meses);
     }
 
     private static void quantoFoiFaturadoNoMes(Collection<Pagamento> pagamentos, LocalDateTime now) {
