@@ -4,6 +4,7 @@ import br.edu.infnet.acme.model.Assinatura;
 import br.edu.infnet.acme.model.Cliente;
 import br.edu.infnet.acme.model.Pagamento;
 import br.edu.infnet.acme.model.Produto;
+import br.edu.infnet.acme.service.FormatadorPagamento;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,30 +13,32 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Collection<Assinatura> assinaturas = new ArrayList<>();
 
-        List<Produto> list1 = Arrays.asList(new Produto(1, "Teste 1", null, new BigDecimal("10.0")),
+        List<Produto> list1 = Arrays.asList(
+                new Produto(1, "Teste 1", null, new BigDecimal("10.0")),
                 new Produto(2, "Teste 2", null, new BigDecimal("20.0")),
                 new Produto(3, "Teste 2", null, new BigDecimal("30.0")),
                 new Produto(4, "Teste 3", null, new BigDecimal("40.0")));
 
-        List<Produto> list2 = Arrays.asList(new Produto(5, "Teste 1", null, new BigDecimal("5.0")),
+        List<Produto> list2 = Arrays.asList(
+                new Produto(5, "Teste 1", null, new BigDecimal("5.0")),
                 new Produto(6, "Teste 2", null, new BigDecimal("6.0")),
                 new Produto(7, "Teste 2", null, new BigDecimal("7.0")),
                 new Produto(8, "Teste 3", null, new BigDecimal("8.0")));
 
 
         Cliente cliente1 = new Cliente(1, "Cliente de Teste");
-        Cliente cliente2 = new Cliente(1, "Consumidor de Teste");
+        Cliente cliente2 = new Cliente(2, "Consumidor de Teste");
 
-        List<Pagamento> pagamentos = Arrays.asList(new Pagamento(1, list1, LocalDateTime.now(), cliente1),
+        List<Pagamento> pagamentos = Arrays.asList(
+                new Pagamento(1, list1, LocalDateTime.now(), cliente1),
                 new Pagamento(2, list2, LocalDateTime.now().minusDays(1L), cliente2),
                 new Pagamento(3, list2, LocalDateTime.now().minusMonths(1), cliente2));
 
         // 1 OK
 
         ordernarEImprimirPagamentoPelaDataCompra(pagamentos); // 2 OK
-        calcularEImprimiSomaValoresDeUmPagamentoComOptinal(pagamentos.get(0));//3 OK
+        calcularEImprimiSomaValoresDeUmPagamentoComOptinal(pagamentos.get(0)); //3 OK
         calcularEImprimiSomaValoresDeUmPagamentoComDouble(pagamentos.get(0)); // 3 OK
         calcularEImprimirValorTodosPagamentos(pagamentos); // 4 OK
         imprimirQuantidadeCadaProdutoVendido(pagamentos); // 5
@@ -96,38 +99,42 @@ public class Main {
     }
 
     private static void calcularEImprimiSomaValoresDeUmPagamentoComOptinal(Pagamento pagamento) {
-        pagamento.getProdutos()
+        System.out.println("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
+        Optional<BigDecimal> optional = pagamento.getProdutos()
                 .stream()
                 .map(Produto::getPreco)
-                .reduce(BigDecimal::add).ifPresent(bigDecimal -> {
-                    System.out.println("3 - Total do Pagamento: " + bigDecimal.doubleValue());
-                });
+                .reduce(BigDecimal::add);
+        System.out.println("\t> Total: " + optional.orElse(BigDecimal.ZERO));
     }
 
     private static void calcularEImprimiSomaValoresDeUmPagamentoComDouble(Pagamento pagamento) {
+        System.out.println("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
         double value = pagamento.getProdutos()
                 .stream()
                 .map(Produto::getPreco)
-                .reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue();
-        System.out.println("3 - Total do Pagamento: " + value);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();
+        System.out.println("\t> Total: " + value);
     }
 
     private static void calcularEImprimirValorTodosPagamentos(Collection<Pagamento> pagamentos) {
-        BigDecimal totalPagamentos = new BigDecimal("0");
-        for (Pagamento pag: pagamentos) {
-            totalPagamentos = totalPagamentos.add(pag.getProdutos().stream()
-                    .map(Produto::getPreco)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add));
+        System.out.println("4 - Calcule o Valor de todos os pagamentos da Lista de pagamentos:");
 
-        }
+        BigDecimal total = pagamentos.stream()
+                .flatMap(pagamento -> pagamento.getProdutos().stream())
+                .map(Produto::getPreco)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        System.out.println("4 - Total Pagamentos: " + totalPagamentos.doubleValue());
+        System.out.println("\t> Total: " + total);
     }
 
     private static void ordernarEImprimirPagamentoPelaDataCompra(Collection<Pagamento> pagamentos) {
+        FormatadorPagamento formatador = new FormatadorPagamento(new Locale("pt", "BR"));
+
+        System.out.println("2 - Ordene e imprima os pagamentos pela data de compra:");
         pagamentos
                 .stream()
                 .sorted(Comparator.comparing(Pagamento::getDataCompra))
-                .forEach(p -> System.out.println("2 - Item: " + p));
+                .forEach(payment -> System.out.println(formatador.format(payment)));
     }
 }
