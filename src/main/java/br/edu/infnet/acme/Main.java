@@ -10,27 +10,28 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
 
         List<Produto> list1 = Arrays.asList(
-                new Produto(1, "Teste 1", null, new BigDecimal("10.0")),
-                new Produto(2, "Teste 2", null, new BigDecimal("20.0")),
-                new Produto(3, "Teste 2", null, new BigDecimal("30.0")),
-                new Produto(4, "Teste 3", null, new BigDecimal("40.0")));
+                new Produto(1, "Music 11111", null, new BigDecimal("10.0")),
+                new Produto(2, "Video 22222", null, new BigDecimal("20.0")),
+                new Produto(3, "Image 33333", null, new BigDecimal("30.0")),
+                new Produto(4, "Music 44444", null, new BigDecimal("40.0")));
 
         List<Produto> list2 = Arrays.asList(
-                new Produto(5, "Teste 1", null, new BigDecimal("5.0")),
-                new Produto(6, "Teste 2", null, new BigDecimal("6.0")),
-                new Produto(7, "Teste 2", null, new BigDecimal("7.0")),
-                new Produto(8, "Teste 3", null, new BigDecimal("8.0")));
+                new Produto(5, "Video 55555", null, new BigDecimal("5.0")),
+                new Produto(6, "Image 66666", null, new BigDecimal("6.0")),
+                new Produto(7, "Music 77777", null, new BigDecimal("7.0")),
+                new Produto(8, "Video 88888", null, new BigDecimal("8.0")));
 
 
-        Cliente cliente1 = new Cliente(1, "Cliente de Teste");
-        Cliente cliente2 = new Cliente(2, "Consumidor de Teste");
-        Cliente cliente3 = new Cliente(3, "Consumidor de Produção");
+        Cliente cliente1 = new Cliente(1, "Maria");
+        Cliente cliente2 = new Cliente(2, "Jose");
+        Cliente cliente3 = new Cliente(3, "Pedro");
 
         LocalDateTime hoje = LocalDateTime.now();
 
@@ -134,7 +135,12 @@ public class Main {
     }
 
     private static void imprimirQuantidadeCadaProdutoVendido(Collection<Pagamento> pagamentos) {
-//        pagamentos.stream().flatMap(List::stream).collect(Collectors.groupingBy(produto -> produto, Collectors.counting()));
+        System.out.println("5 - Imprima a quantidade de cada Produto vendido:");
+
+        pagamentos.stream()
+                .flatMap(pagamento -> pagamento.getProdutos().stream())
+                .collect(Collectors.groupingBy(produto -> produto, Collectors.counting()))
+                .forEach((key, value) -> System.out.println("\t> produto: " + key.getNome() + ", qtde: " + value));
     }
 
     private static void calcularEImprimiSomaValoresDeUmPagamentoComOptinal(Pagamento pagamento) {
