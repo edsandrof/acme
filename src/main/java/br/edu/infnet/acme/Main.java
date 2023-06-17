@@ -55,7 +55,7 @@ public class Main {
         calcularEImprimirValorTodosPagamentos(pagamentos); // 4 OK
         imprimirQuantidadeCadaProdutoVendido(pagamentos); // 5
         criandoMapClienteProduto(pagamentos); // 6 OK
-//        qualClienteGastouMais(pagamentos); // 7
+        qualClienteGastouMais(pagamentos); // 7 OK
 //        quantoFoiFaturadoNoMes(pagamentos, LocalDateTime.now()); // 8
 //        criar3AssinaturasDe99_98Sendo2Encerradas(); // 9 OK
         imprimirTempoEmMesesAssinauturaAtiva(assinaturas); // 10 OK
@@ -101,6 +101,20 @@ public class Main {
     }
 
     private static void qualClienteGastouMais(Collection<Pagamento> pagamentos) {
+        System.out.println("7 - Qual cliente gastou mais?");
+
+        Function<Pagamento, BigDecimal> reducing = pagamento -> pagamento.getProdutos().stream()
+                .map(Produto::getPreco)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        Map<Cliente, BigDecimal> topClientes = pagamentos.stream()
+                .collect(Collectors.groupingBy(Pagamento::getCliente,
+                        Collectors.reducing(BigDecimal.ZERO, reducing, BigDecimal::add)));
+
+        Map.Entry<Cliente, BigDecimal> clientEntry = topClientes.entrySet().stream()
+                .max(Map.Entry.comparingByValue()).get();
+
+        System.out.println("\t> " + clientEntry.getKey() + ", gastou " + clientEntry.getValue());
     }
 
     private static void criandoMapClienteProduto(Collection<Pagamento> pagamentos) {
