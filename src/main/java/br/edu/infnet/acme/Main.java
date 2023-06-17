@@ -60,12 +60,11 @@ public class Main {
 //        criar3AssinaturasDe99_98Sendo2Encerradas(); // 9 OK
         imprimirTempoEmMesesAssinauturaAtiva(assinaturas); // 10 OK
         imprimirTempoEntreBeginEndAssinaturas(assinaturas); // 11 OK
-//        calcularValorPagoEmCadaAssinaturaAteAgora(assinaturas); // 12
+        calcularValorPagoEmCadaAssinaturaAteAgora(assinaturas); // 12 ok
     }
 
     private static void imprimirTempoEntreBeginEndAssinaturas(Collection<Assinatura> assinaturas) {
         System.out.println("11 - Imprima o tempo de meses entre o start e end de todas assinaturas:");
-        FormatadorPagamento formatador = new FormatadorPagamento(new Locale("pt", "BR"));
 
         LocalDateTime hoje = LocalDateTime.now();
 
@@ -75,6 +74,14 @@ public class Main {
     }
 
     private static void calcularValorPagoEmCadaAssinaturaAteAgora(Collection<Assinatura> assinaturas) {
+        System.out.println("12 - Calcule o valor pago em cada assinatura até o momento:");
+
+        LocalDateTime hoje = LocalDateTime.now();
+
+        assinaturas.stream()
+                .map(assinatura -> assinatura.getMensalidade().multiply(
+                        new BigDecimal(ChronoUnit.MONTHS.between(assinatura.getBegin(), assinatura.getEnd().orElse(hoje)))))
+                .forEach(total -> System.out.println("\t> Assinatura custou " + total + " até o momento"));
     }
 
     private static void imprimirTempoEmMesesAssinauturaAtiva(Collection<Assinatura> assinaturas) {
