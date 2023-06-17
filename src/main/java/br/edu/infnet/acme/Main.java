@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -53,7 +54,7 @@ public class Main {
         calcularEImprimiSomaValoresDeUmPagamentoComDouble(pagamentos.get(0)); // 3 OK
         calcularEImprimirValorTodosPagamentos(pagamentos); // 4 OK
         imprimirQuantidadeCadaProdutoVendido(pagamentos); // 5
-//        criandoMapClienteProduto(pagamentos); // 6 OK
+        criandoMapClienteProduto(pagamentos); // 6 OK
 //        qualClienteGastouMais(pagamentos); // 7
 //        quantoFoiFaturadoNoMes(pagamentos, LocalDateTime.now()); // 8
 //        criar3AssinaturasDe99_98Sendo2Encerradas(); // 9 OK
@@ -96,17 +97,19 @@ public class Main {
     }
 
     private static void criandoMapClienteProduto(Collection<Pagamento> pagamentos) {
-        Map<String, List<Produto>> mapClienteProdutos = new HashMap<String, List<Produto>>();
-        pagamentos.forEach(pag -> {
-            mapClienteProdutos.put(pag.getCliente().getNome(), pag.getProdutos().stream().toList());
-        });
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("++++++++++++ MAP CLIENTE/PRODUT ++++++++++++++");
-        mapClienteProdutos.forEach((cliente, produtos) -> {
-            System.out.println(cliente);
-            produtos.forEach(System.out::println);
-        });
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("6 - Crie um Mapa de <Cliente, List<Produto> , onde Cliente pode ser o nome do cliente:");
+
+        Map<String, List<Produto>> mapClienteProduto = pagamentos.stream()
+                .collect(Collectors.groupingBy(
+                        pagamento -> pagamento.getCliente().getNome(),
+                        Collectors.mapping(Pagamento::getProdutos,
+                                Collectors.flatMapping(List::stream, Collectors.toList())
+                        )
+                ));
+
+        mapClienteProduto.entrySet().stream()
+                .map(cp -> "\t> " + cp.getKey() + ": " + cp.getValue() )
+                .forEach(System.out::println);
     }
 
     private static void imprimirQuantidadeCadaProdutoVendido(Collection<Pagamento> pagamentos) {

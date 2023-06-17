@@ -20,10 +20,6 @@ public class Produto {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -36,15 +32,16 @@ public class Produto {
         return file;
     }
 
-    public void setFile(Path file) {
-        this.file = file;
-    }
-
     public BigDecimal getPreco() {
         return preco;
     }
 
     public void setPreco(BigDecimal preco) {
         this.preco = preco;
+    }
+
+    @Override
+    public String toString() {
+        return "Produto: " + nome + ", " + preco;
     }
 }
