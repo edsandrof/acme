@@ -8,6 +8,8 @@ import br.edu.infnet.acme.service.FormatadorPagamento;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Year;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
@@ -54,11 +56,10 @@ public class Main {
         calcularEImprimiSomaValoresDeUmPagamentoComOptinal(pagamentos.get(0)); //3 OK
         calcularEImprimiSomaValoresDeUmPagamentoComDouble(pagamentos.get(0)); // 3 OK
         calcularEImprimirValorTodosPagamentos(pagamentos); // 4 OK
-        imprimirQuantidadeCadaProdutoVendido(pagamentos); // 5
+        imprimirQuantidadeCadaProdutoVendido(pagamentos); // 5 OK
         criandoMapClienteProduto(pagamentos); // 6 OK
         qualClienteGastouMais(pagamentos); // 7 OK
-//        quantoFoiFaturadoNoMes(pagamentos, LocalDateTime.now()); // 8
-//        criar3AssinaturasDe99_98Sendo2Encerradas(); // 9 OK
+        quantoFoiFaturadoNoMes(pagamentos); // 8 OK
         imprimirTempoEmMesesAssinauturaAtiva(assinaturas); // 10 OK
         imprimirTempoEntreBeginEndAssinaturas(assinaturas); // 11 OK
         calcularValorPagoEmCadaAssinaturaAteAgora(assinaturas); // 12 ok
@@ -98,7 +99,23 @@ public class Main {
         System.out.printf("\t> Assinatura ativa há %d meses%n", meses);
     }
 
-    private static void quantoFoiFaturadoNoMes(Collection<Pagamento> pagamentos, LocalDateTime now) {
+    private static void quantoFoiFaturadoNoMes(Collection<Pagamento> pagamentos) {
+        System.out.println("8 - Quanto foi faturado em um determinado mês?");
+
+        LocalDateTime hoje = LocalDateTime.now();
+
+        Month mes = hoje.getMonth().minus(1);
+        int ano = hoje.getYear();
+
+        BigDecimal faturamentoMes = pagamentos.stream()
+                .filter(pagamento -> pagamento.getDataCompra().getYear() == ano)
+                .filter(pagamento -> pagamento.getDataCompra().getMonth().equals(mes))
+                .flatMap(pagamento -> pagamento.getProdutos().stream())
+                .map(Produto::getPreco)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        System.out.printf("\t> Hoje: %s, faturamento no mês %d/%d: %.2f%n", hoje.toLocalDate(), mes.getValue(), ano, faturamentoMes);
+
     }
 
     private static void qualClienteGastouMais(Collection<Pagamento> pagamentos) {
@@ -130,7 +147,7 @@ public class Main {
                 ));
 
         mapClienteProduto.entrySet().stream()
-                .map(cp -> "\t> " + cp.getKey() + ": " + cp.getValue() )
+                .map(cp -> "\t> " + cp.getKey() + ": " + cp.getValue())
                 .forEach(System.out::println);
     }
 
