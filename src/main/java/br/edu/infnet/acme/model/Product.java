@@ -3,13 +3,13 @@ package br.edu.infnet.acme.model;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 
-public class Produto {
+public class Product {
     private Integer id;
     private String nome;
     private Path file;
     private BigDecimal preco;
 
-    public Produto(Integer id, String nome, Path file, BigDecimal preco) {
+    public Product(Integer id, String nome, Path file, BigDecimal preco) {
         this.id = id;
         this.nome = nome;
         this.file = file;

@@ -8,7 +8,7 @@ import java.util.List;
 public class Payment implements Comparable<Payment> {
 
     private Integer id;
-    private List<Produto> produtos;
+    private List<Product> products;
 
     private LocalDateTime dataCompra;
 
@@ -17,9 +17,9 @@ public class Payment implements Comparable<Payment> {
     public Payment() {
     }
 
-    public Payment(Integer id, List<Produto> produtos, LocalDateTime dataCompra, Customer customer) {
+    public Payment(Integer id, List<Product> products, LocalDateTime dataCompra, Customer customer) {
         this.id = id;
-        this.produtos = produtos;
+        this.products = products;
         this.dataCompra = dataCompra;
         this.customer = customer;
     }
@@ -32,12 +32,12 @@ public class Payment implements Comparable<Payment> {
         this.id = id;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
+    public List<Product> getProdutos() {
+        return products;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setProdutos(List<Product> products) {
+        this.products = products;
     }
 
     public LocalDateTime getDataCompra() {
