@@ -5,11 +5,11 @@ import br.edu.infnet.acme.model.Payment;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class FormatadorPagamento {
+public class PaymentFormatter {
 
     private final Locale locale;
 
-    public FormatadorPagamento(Locale locale) {
+    public PaymentFormatter(Locale locale) {
         this.locale = locale;
     }
 

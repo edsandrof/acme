@@ -4,7 +4,7 @@ import br.edu.infnet.acme.model.Subscription;
 import br.edu.infnet.acme.model.Customer;
 import br.edu.infnet.acme.model.Payment;
 import br.edu.infnet.acme.model.Product;
-import br.edu.infnet.acme.service.FormatadorPagamento;
+import br.edu.infnet.acme.service.PaymentFormatter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -190,7 +190,7 @@ public class Main {
     }
 
     private static void ordernarEImprimirPagamentoPelaDataCompra(Collection<Payment> payments) {
-        FormatadorPagamento formatador = new FormatadorPagamento(new Locale("pt", "BR"));
+        PaymentFormatter formatador = new PaymentFormatter(new Locale("pt", "BR"));
 
         System.out.println("2 - Ordene e imprima os pagamentos pela data de compra:");
         payments
