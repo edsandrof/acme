@@ -30,9 +30,9 @@ public class Main {
                 new Product(8, "Video 88888", null, new BigDecimal("8.0")));
 
 
-        Customer customer1 = new Customer(1, "Maria");
-        Customer customer2 = new Customer(2, "Jose");
-        Customer customer3 = new Customer(3, "Pedro");
+        Customer customer1 = new Customer("Maria");
+        Customer customer2 = new Customer("Jose");
+        Customer customer3 = new Customer("Pedro");
 
         LocalDateTime hoje = LocalDateTime.now();
 
@@ -139,7 +139,7 @@ public class Main {
 
         Map<String, List<Product>> mapClienteProduto = payments.stream()
                 .collect(Collectors.groupingBy(
-                        payment -> payment.getCliente().getNome(),
+                        payment -> payment.getCliente().getName(),
                         Collectors.mapping(Payment::getProdutos,
                                 Collectors.flatMapping(List::stream, Collectors.toList())
                         )

@@ -16,6 +16,6 @@ public class PaymentFormatter {
     public String format(Payment payment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", locale);
         return String.format("\t> cliente: %s, data de compra: %s",
-                payment.getCliente().getNome(), payment.getDataCompra().format(formatter));
+                payment.getCliente().getName(), payment.getDataCompra().format(formatter));
     }
 }

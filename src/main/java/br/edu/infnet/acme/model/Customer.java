@@ -2,28 +2,18 @@ package br.edu.infnet.acme.model;
 
 public class Customer {
 
-    private Integer id;
-    private String nome;
+    private String name;
 
-    public Customer() {}
-
-    public Customer(Integer id, String nome) {
-        super();
-        this.id = id;
-        this.nome = nome;
+    public Customer(String name) {
+        this.name = name;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     @Override
     public String toString() {
-        return "Cliente: " + nome;
+        return "Customer: " + name;
     }
 }
