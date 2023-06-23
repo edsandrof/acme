@@ -1,7 +1,6 @@
 Infnet - Clean Code e Padrões de Projeto - Prof. Leonardo da Gloria
 
-Grupo: Edsandro Freitas, Amilton Rodrigues Nunes, Bruno Passos
+Aluno: Edsandro Freitas
 
-Fork: https://github.com/AmiltonRN/acme
-
+Entrega 2 - Refatore o seu código para deixá-lo orientado a objetos.
 Implemente um projeto JAVA de uma Loja virtual ACME que vende downloads de músicas, videos e imagens.
