@@ -37,9 +37,9 @@ public class Main {
         LocalDateTime hoje = LocalDateTime.now();
 
         List<Payment> payments = Arrays.asList(
-                new Payment(1, list1, hoje, customer1),
-                new Payment(2, list2, hoje.minusDays(1L), customer2),
-                new Payment(3, list2, hoje.minusMonths(1), customer2));
+                new Payment(list1, hoje, customer1),
+                new Payment(list2, hoje.minusDays(1L), customer2),
+                new Payment(list2, hoje.minusMonths(1), customer2));
 
         BigDecimal custoAssinatura = new BigDecimal("99.98");
 
@@ -107,9 +107,9 @@ public class Main {
         int ano = hoje.getYear();
 
         BigDecimal faturamentoMes = payments.stream()
-                .filter(payment -> payment.getDataCompra().getYear() == ano)
-                .filter(payment -> payment.getDataCompra().getMonth().equals(mes))
-                .flatMap(payment -> payment.getProdutos().stream())
+                .filter(payment -> payment.getPurchaseDate().getYear() == ano)
+                .filter(payment -> payment.getPurchaseDate().getMonth().equals(mes))
+                .flatMap(payment -> payment.getProducts().stream())
                 .map(Product::getPreco)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -120,12 +120,12 @@ public class Main {
     private static void qualClienteGastouMais(Collection<Payment> payments) {
         System.out.println("7 - Qual cliente gastou mais?");
 
-        Function<Payment, BigDecimal> reducing = payment -> payment.getProdutos().stream()
+        Function<Payment, BigDecimal> reducing = payment -> payment.getProducts().stream()
                 .map(Product::getPreco)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         Map<Customer, BigDecimal> topClientes = payments.stream()
-                .collect(Collectors.groupingBy(Payment::getCliente,
+                .collect(Collectors.groupingBy(Payment::getCustomer,
                         Collectors.reducing(BigDecimal.ZERO, reducing, BigDecimal::add)));
 
         Map.Entry<Customer, BigDecimal> clientEntry = topClientes.entrySet().stream()
@@ -139,8 +139,8 @@ public class Main {
 
         Map<String, List<Product>> mapClienteProduto = payments.stream()
                 .collect(Collectors.groupingBy(
-                        payment -> payment.getCliente().getName(),
-                        Collectors.mapping(Payment::getProdutos,
+                        payment -> payment.getCustomer().getName(),
+                        Collectors.mapping(Payment::getProducts,
                                 Collectors.flatMapping(List::stream, Collectors.toList())
                         )
                 ));
@@ -154,14 +154,14 @@ public class Main {
         System.out.println("5 - Imprima a quantidade de cada Produto vendido:");
 
         payments.stream()
-                .flatMap(payment -> payment.getProdutos().stream())
+                .flatMap(payment -> payment.getProducts().stream())
                 .collect(Collectors.groupingBy(product -> product, Collectors.counting()))
                 .forEach((key, value) -> System.out.println("\t> produto: " + key.getNome() + ", qtde: " + value));
     }
 
     private static void calcularEImprimiSomaValoresDeUmPagamentoComOptinal(Payment payment) {
         System.out.println("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
-        Optional<BigDecimal> optional = payment.getProdutos()
+        Optional<BigDecimal> optional = payment.getProducts()
                 .stream()
                 .map(Product::getPreco)
                 .reduce(BigDecimal::add);
@@ -170,7 +170,7 @@ public class Main {
 
     private static void calcularEImprimiSomaValoresDeUmPagamentoComDouble(Payment payment) {
         System.out.println("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
-        double value = payment.getProdutos()
+        double value = payment.getProducts()
                 .stream()
                 .map(Product::getPreco)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
@@ -182,7 +182,7 @@ public class Main {
         System.out.println("4 - Calcule o Valor de todos os pagamentos da Lista de pagamentos:");
 
         BigDecimal total = payments.stream()
-                .flatMap(payment -> payment.getProdutos().stream())
+                .flatMap(payment -> payment.getProducts().stream())
                 .map(Product::getPreco)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -195,7 +195,7 @@ public class Main {
         System.out.println("2 - Ordene e imprima os pagamentos pela data de compra:");
         payments
                 .stream()
-                .sorted(Comparator.comparing(Payment::getDataCompra))
+                .sorted(Comparator.comparing(Payment::getPurchaseDate))
                 .forEach(payment -> System.out.println(formatador.format(payment)));
     }
 }
