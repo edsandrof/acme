@@ -1,6 +1,6 @@
 package br.edu.infnet.acme;
 
-import br.edu.infnet.acme.model.Assinatura;
+import br.edu.infnet.acme.model.Subscription;
 import br.edu.infnet.acme.model.Cliente;
 import br.edu.infnet.acme.model.Pagamento;
 import br.edu.infnet.acme.model.Produto;
@@ -9,7 +9,6 @@ import br.edu.infnet.acme.service.FormatadorPagamento;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.Year;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
@@ -44,10 +43,10 @@ public class Main {
 
         BigDecimal custoAssinatura = new BigDecimal("99.98");
 
-        Collection<Assinatura> assinaturas = Arrays.asList(
-                new Assinatura(1, custoAssinatura, hoje.minusMonths(3), cliente1),
-                new Assinatura(2, custoAssinatura, hoje.minusMonths(6L), hoje.minusMonths(2L), cliente2),
-                new Assinatura(3, custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), cliente3)
+        Collection<Subscription> subscriptions = Arrays.asList(
+                new Subscription(1, custoAssinatura, hoje.minusMonths(3), cliente1),
+                new Subscription(2, custoAssinatura, hoje.minusMonths(6L), hoje.minusMonths(2L), cliente2),
+                new Subscription(3, custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), cliente3)
         );
 
         // 1 OK
@@ -60,38 +59,38 @@ public class Main {
         criandoMapClienteProduto(pagamentos); // 6 OK
         qualClienteGastouMais(pagamentos); // 7 OK
         quantoFoiFaturadoNoMes(pagamentos); // 8 OK
-        imprimirTempoEmMesesAssinauturaAtiva(assinaturas); // 10 OK
-        imprimirTempoEntreBeginEndAssinaturas(assinaturas); // 11 OK
-        calcularValorPagoEmCadaAssinaturaAteAgora(assinaturas); // 12 ok
+        imprimirTempoEmMesesAssinauturaAtiva(subscriptions); // 10 OK
+        imprimirTempoEntreBeginEndAssinaturas(subscriptions); // 11 OK
+        calcularValorPagoEmCadaAssinaturaAteAgora(subscriptions); // 12 ok
     }
 
-    private static void imprimirTempoEntreBeginEndAssinaturas(Collection<Assinatura> assinaturas) {
+    private static void imprimirTempoEntreBeginEndAssinaturas(Collection<Subscription> subscriptions) {
         System.out.println("11 - Imprima o tempo de meses entre o start e end de todas assinaturas:");
 
         LocalDateTime hoje = LocalDateTime.now();
 
-        assinaturas.stream()
-                .map(assinatura -> ChronoUnit.MONTHS.between(assinatura.getBegin(), assinatura.getEnd().orElse(hoje)))
+        subscriptions.stream()
+                .map(subscription -> ChronoUnit.MONTHS.between(subscription.getBegin(), subscription.getEnd().orElse(hoje)))
                 .forEach(meses -> System.out.println("\t> Assinatura tem " + meses + " meses"));
     }
 
-    private static void calcularValorPagoEmCadaAssinaturaAteAgora(Collection<Assinatura> assinaturas) {
+    private static void calcularValorPagoEmCadaAssinaturaAteAgora(Collection<Subscription> subscriptions) {
         System.out.println("12 - Calcule o valor pago em cada assinatura até o momento:");
 
         LocalDateTime hoje = LocalDateTime.now();
 
-        assinaturas.stream()
-                .map(assinatura -> assinatura.getMensalidade().multiply(
-                        new BigDecimal(ChronoUnit.MONTHS.between(assinatura.getBegin(), assinatura.getEnd().orElse(hoje)))))
+        subscriptions.stream()
+                .map(subscription -> subscription.getMensalidade().multiply(
+                        new BigDecimal(ChronoUnit.MONTHS.between(subscription.getBegin(), subscription.getEnd().orElse(hoje)))))
                 .forEach(total -> System.out.println("\t> Assinatura custou " + total + " até o momento"));
     }
 
-    private static void imprimirTempoEmMesesAssinauturaAtiva(Collection<Assinatura> assinaturas) {
+    private static void imprimirTempoEmMesesAssinauturaAtiva(Collection<Subscription> subscriptions) {
         System.out.println("10 - Imprima o tempo em meses de alguma assinatura ainda ativa:");
         LocalDateTime hoje = LocalDateTime.now();
 
-        long meses = assinaturas.stream()
-                .filter(assinatura -> assinatura.getEnd().isEmpty())
+        long meses = subscriptions.stream()
+                .filter(subscription -> subscription.getEnd().isEmpty())
                 .map(a -> ChronoUnit.MONTHS.between(a.getBegin(), a.getEnd().orElse(hoje)))
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("Assinatura ativa não encontrada!"));

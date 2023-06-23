@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class Assinatura {
+public class Subscription {
 
     private Integer id;
     private BigDecimal mensalidade;
@@ -15,7 +15,7 @@ public class Assinatura {
 
     private Cliente cliente;
 
-    public Assinatura(Integer id, BigDecimal mensalidade, LocalDateTime begin, Cliente cliente) {
+    public Subscription(Integer id, BigDecimal mensalidade, LocalDateTime begin, Cliente cliente) {
         this.id = id;
         this.mensalidade = mensalidade;
         this.begin = begin;
@@ -23,7 +23,7 @@ public class Assinatura {
         this.end = Optional.empty();
     }
 
-    public Assinatura(Integer id, BigDecimal mensalidade, LocalDateTime begin, LocalDateTime end, Cliente cliente) {
+    public Subscription(Integer id, BigDecimal mensalidade, LocalDateTime begin, LocalDateTime end, Cliente cliente) {
         this(id, mensalidade, begin, cliente);
         this.end = Optional.of(end);
     }
