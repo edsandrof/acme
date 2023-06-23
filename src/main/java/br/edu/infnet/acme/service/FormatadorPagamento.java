@@ -1,6 +1,6 @@
 package br.edu.infnet.acme.service;
 
-import br.edu.infnet.acme.model.Pagamento;
+import br.edu.infnet.acme.model.Payment;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -13,9 +13,9 @@ public class FormatadorPagamento {
         this.locale = locale;
     }
 
-    public String format(Pagamento pagamento) {
+    public String format(Payment payment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", locale);
         return String.format("\t> cliente: %s, data de compra: %s",
-                pagamento.getCliente().getNome(), pagamento.getDataCompra().format(formatter));
+                payment.getCliente().getNome(), payment.getDataCompra().format(formatter));
     }
 }

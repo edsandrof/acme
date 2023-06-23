@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Pagamento implements Comparable<Pagamento> {
+public class Payment implements Comparable<Payment> {
 
     private Integer id;
     private List<Produto> produtos;
@@ -14,10 +14,10 @@ public class Pagamento implements Comparable<Pagamento> {
 
     private Customer customer;
 
-    public Pagamento() {
+    public Payment() {
     }
 
-    public Pagamento(Integer id, List<Produto> produtos, LocalDateTime dataCompra, Customer customer) {
+    public Payment(Integer id, List<Produto> produtos, LocalDateTime dataCompra, Customer customer) {
         this.id = id;
         this.produtos = produtos;
         this.dataCompra = dataCompra;
@@ -57,7 +57,7 @@ public class Pagamento implements Comparable<Pagamento> {
     }
 
     @Override
-    public int compareTo(Pagamento o) {
+    public int compareTo(Payment o) {
         return dataCompra.compareTo(o.getDataCompra());
     }
 
