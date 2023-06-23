@@ -12,16 +12,16 @@ public class Pagamento implements Comparable<Pagamento> {
 
     private LocalDateTime dataCompra;
 
-    private Cliente cliente;
+    private Customer customer;
 
     public Pagamento() {
     }
 
-    public Pagamento(Integer id, List<Produto> produtos, LocalDateTime dataCompra, Cliente cliente) {
+    public Pagamento(Integer id, List<Produto> produtos, LocalDateTime dataCompra, Customer customer) {
         this.id = id;
         this.produtos = produtos;
         this.dataCompra = dataCompra;
-        this.cliente = cliente;
+        this.customer = customer;
     }
 
     public Integer getId() {
@@ -48,12 +48,12 @@ public class Pagamento implements Comparable<Pagamento> {
         this.dataCompra = dataCompra;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Customer getCliente() {
+        return customer;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setCliente(Customer customer) {
+        this.customer = customer;
     }
 
     @Override

@@ -1,13 +1,13 @@
 package br.edu.infnet.acme.model;
 
-public class Cliente {
+public class Customer {
 
     private Integer id;
     private String nome;
 
-    public Cliente() {}
+    public Customer() {}
 
-    public Cliente(Integer id, String nome) {
+    public Customer(Integer id, String nome) {
         super();
         this.id = id;
         this.nome = nome;

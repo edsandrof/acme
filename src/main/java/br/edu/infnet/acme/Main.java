@@ -1,7 +1,7 @@
 package br.edu.infnet.acme;
 
 import br.edu.infnet.acme.model.Subscription;
-import br.edu.infnet.acme.model.Cliente;
+import br.edu.infnet.acme.model.Customer;
 import br.edu.infnet.acme.model.Pagamento;
 import br.edu.infnet.acme.model.Produto;
 import br.edu.infnet.acme.service.FormatadorPagamento;
@@ -30,23 +30,23 @@ public class Main {
                 new Produto(8, "Video 88888", null, new BigDecimal("8.0")));
 
 
-        Cliente cliente1 = new Cliente(1, "Maria");
-        Cliente cliente2 = new Cliente(2, "Jose");
-        Cliente cliente3 = new Cliente(3, "Pedro");
+        Customer customer1 = new Customer(1, "Maria");
+        Customer customer2 = new Customer(2, "Jose");
+        Customer customer3 = new Customer(3, "Pedro");
 
         LocalDateTime hoje = LocalDateTime.now();
 
         List<Pagamento> pagamentos = Arrays.asList(
-                new Pagamento(1, list1, hoje, cliente1),
-                new Pagamento(2, list2, hoje.minusDays(1L), cliente2),
-                new Pagamento(3, list2, hoje.minusMonths(1), cliente2));
+                new Pagamento(1, list1, hoje, customer1),
+                new Pagamento(2, list2, hoje.minusDays(1L), customer2),
+                new Pagamento(3, list2, hoje.minusMonths(1), customer2));
 
         BigDecimal custoAssinatura = new BigDecimal("99.98");
 
         Collection<Subscription> subscriptions = Arrays.asList(
-                new Subscription(1, custoAssinatura, hoje.minusMonths(3), cliente1),
-                new Subscription(2, custoAssinatura, hoje.minusMonths(6L), hoje.minusMonths(2L), cliente2),
-                new Subscription(3, custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), cliente3)
+                new Subscription(1, custoAssinatura, hoje.minusMonths(3), customer1),
+                new Subscription(2, custoAssinatura, hoje.minusMonths(6L), hoje.minusMonths(2L), customer2),
+                new Subscription(3, custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), customer3)
         );
 
         // 1 OK
@@ -124,11 +124,11 @@ public class Main {
                 .map(Produto::getPreco)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        Map<Cliente, BigDecimal> topClientes = pagamentos.stream()
+        Map<Customer, BigDecimal> topClientes = pagamentos.stream()
                 .collect(Collectors.groupingBy(Pagamento::getCliente,
                         Collectors.reducing(BigDecimal.ZERO, reducing, BigDecimal::add)));
 
-        Map.Entry<Cliente, BigDecimal> clientEntry = topClientes.entrySet().stream()
+        Map.Entry<Customer, BigDecimal> clientEntry = topClientes.entrySet().stream()
                 .max(Map.Entry.comparingByValue()).get();
 
         System.out.println("\t> " + clientEntry.getKey() + ", gastou " + clientEntry.getValue());

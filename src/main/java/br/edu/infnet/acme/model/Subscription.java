@@ -13,18 +13,18 @@ public class Subscription {
 
     private Optional<LocalDateTime> end;
 
-    private Cliente cliente;
+    private Customer customer;
 
-    public Subscription(Integer id, BigDecimal mensalidade, LocalDateTime begin, Cliente cliente) {
+    public Subscription(Integer id, BigDecimal mensalidade, LocalDateTime begin, Customer customer) {
         this.id = id;
         this.mensalidade = mensalidade;
         this.begin = begin;
-        this.cliente = cliente;
+        this.customer = customer;
         this.end = Optional.empty();
     }
 
-    public Subscription(Integer id, BigDecimal mensalidade, LocalDateTime begin, LocalDateTime end, Cliente cliente) {
-        this(id, mensalidade, begin, cliente);
+    public Subscription(Integer id, BigDecimal mensalidade, LocalDateTime begin, LocalDateTime end, Customer customer) {
+        this(id, mensalidade, begin, customer);
         this.end = Optional.of(end);
     }
 
@@ -56,7 +56,7 @@ public class Subscription {
         this.end = Optional.of(end);
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Customer getCliente() {
+        return customer;
     }
 }
