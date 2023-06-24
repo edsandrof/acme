@@ -34,19 +34,19 @@ public class Main {
         Customer customer2 = new Customer("Jose");
         Customer customer3 = new Customer("Pedro");
 
-        LocalDateTime hoje = LocalDateTime.now();
+        LocalDateTime today = LocalDateTime.now();
 
         List<Payment> payments = Arrays.asList(
-                new Payment(list1, hoje, customer1),
-                new Payment(list2, hoje.minusDays(1L), customer2),
-                new Payment(list2, hoje.minusMonths(1), customer2));
+                new Payment(list1, today, customer1),
+                new Payment(list2, today.minusDays(1L), customer2),
+                new Payment(list2, today.minusMonths(1), customer2));
 
         BigDecimal custoAssinatura = new BigDecimal("99.98");
 
         Collection<Subscription> subscriptions = Arrays.asList(
-                new Subscription(custoAssinatura, hoje.minusMonths(3), customer1),
-                new Subscription(custoAssinatura, hoje.minusMonths(6L), hoje.minusMonths(2L), customer2),
-                new Subscription(custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), customer3)
+                new Subscription(custoAssinatura, today.minusMonths(3), customer1),
+                new Subscription(custoAssinatura, today.minusMonths(6L), today.minusMonths(2L), customer2),
+                new Subscription(custoAssinatura, today.minusMonths(8L), today.minusMonths(3L), customer3)
         );
 
 
@@ -76,7 +76,11 @@ public class Main {
         paymentService.getTopCustomers().entrySet().stream().max(Map.Entry.comparingByValue())
                 .ifPresent(top -> System.out.println("\t> " + top.getKey() + ", gastou " + top.getValue()));
 
-        quantoFoiFaturadoNoMes(payments); // 8 OK
+        System.out.println("8 - Quanto foi faturado em um determinado mês?");
+        Month lastMonth = today.getMonth().minus(1);
+        System.out.printf("\t> Today: %s, billed in %d-%02d: %.2f%n", today.toLocalDate(), today.getYear(), lastMonth.getValue(),
+                paymentService.howMuchBilledMonth(lastMonth, today.getYear()));
+
         imprimirTempoEmMesesAssinauturaAtiva(subscriptions); // 10 OK
         imprimirTempoEntreBeginEndAssinaturas(subscriptions); // 11 OK
         calcularValorPagoEmCadaAssinaturaAteAgora(subscriptions); // 12 ok

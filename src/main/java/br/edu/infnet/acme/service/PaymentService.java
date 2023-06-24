@@ -6,6 +6,7 @@ import br.edu.infnet.acme.model.Payment;
 import br.edu.infnet.acme.model.Product;
 
 import java.math.BigDecimal;
+import java.time.Month;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,15 @@ public class PaymentService {
         return payments.stream()
                 .collect(Collectors.groupingBy(Payment::getCustomer,
                         Collectors.reducing(BigDecimal.ZERO, reducing, BigDecimal::add)));
+    }
+
+    public BigDecimal howMuchBilledMonth(Month month, int year) {
+        return payments.stream()
+                .filter(payment -> payment.getPurchaseDate().getYear() == year)
+                .filter(payment -> payment.getPurchaseDate().getMonth().equals(month))
+                .flatMap(payment -> payment.getProducts().stream())
+                .map(Product::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private void validateIndex(int index) {
