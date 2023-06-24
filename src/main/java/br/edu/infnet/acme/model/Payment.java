@@ -39,10 +39,13 @@ public class Payment {
     }
 
     public double getDoublePaymentSum() {
+        return getPaymentSum().doubleValue();
+    }
+
+    public BigDecimal getPaymentSum() {
         return products.stream()
                 .map(Product::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .doubleValue();
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override

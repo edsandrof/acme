@@ -61,7 +61,9 @@ public class Main {
         System.out.println("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
         System.out.println("\t> Total: " + paymentService.getDoublePaymentSum(0));
 
-        calcularEImprimirValorTodosPagamentos(payments); // 4 OK
+        System.out.println("4 - Calcule o Valor de todos os pagamentos da Lista de pagamentos:");
+        System.out.println("\t> Total: " + paymentService.getAllPaymentSum());
+
         imprimirQuantidadeCadaProdutoVendido(payments); // 5 OK
         criandoMapClienteProduto(payments); // 6 OK
         qualClienteGastouMais(payments); // 7 OK

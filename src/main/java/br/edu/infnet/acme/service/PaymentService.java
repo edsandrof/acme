@@ -2,7 +2,6 @@ package br.edu.infnet.acme.service;
 
 import br.edu.infnet.acme.application.exception.PaymentIndexNotFoundException;
 import br.edu.infnet.acme.model.Payment;
-import br.edu.infnet.acme.model.Product;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -32,6 +31,12 @@ public class PaymentService {
         validateIndex(index);
 
         return payments.get(index).getDoublePaymentSum();
+    }
+
+    public BigDecimal getAllPaymentSum() {
+        return payments.stream()
+                .map(Payment::getPaymentSum)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private void validateIndex(int index) {
