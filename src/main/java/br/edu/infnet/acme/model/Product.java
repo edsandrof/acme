@@ -4,44 +4,38 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 
 public class Product {
-    private Integer id;
-    private String nome;
+    private String name;
     private Path file;
-    private BigDecimal preco;
+    private BigDecimal price;
 
-    public Product(Integer id, String nome, Path file, BigDecimal preco) {
-        this.id = id;
-        this.nome = nome;
+    public Product(String name, Path file, BigDecimal price) {
+        this.name = name;
         this.file = file;
-        this.preco = preco;
+        this.price = price;
     }
 
-    public Integer getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Path getFile() {
         return file;
     }
 
-    public BigDecimal getPreco() {
-        return preco;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     @Override
     public String toString() {
-        return "Produto: " + nome + ", " + preco;
+        return "Product: " + name + ", " + price;
     }
 }

@@ -18,16 +18,16 @@ public class Main {
     public static void main(String[] args) {
 
         List<Product> list1 = Arrays.asList(
-                new Product(1, "Music 11111", null, new BigDecimal("10.0")),
-                new Product(2, "Video 22222", null, new BigDecimal("20.0")),
-                new Product(3, "Image 33333", null, new BigDecimal("30.0")),
-                new Product(4, "Music 44444", null, new BigDecimal("40.0")));
+                new Product("Music 11111", null, new BigDecimal("10.0")),
+                new Product("Video 22222", null, new BigDecimal("20.0")),
+                new Product("Image 33333", null, new BigDecimal("30.0")),
+                new Product("Music 44444", null, new BigDecimal("40.0")));
 
         List<Product> list2 = Arrays.asList(
-                new Product(5, "Video 55555", null, new BigDecimal("5.0")),
-                new Product(6, "Image 66666", null, new BigDecimal("6.0")),
-                new Product(7, "Music 77777", null, new BigDecimal("7.0")),
-                new Product(8, "Video 88888", null, new BigDecimal("8.0")));
+                new Product("Video 55555", null, new BigDecimal("5.0")),
+                new Product("Image 66666", null, new BigDecimal("6.0")),
+                new Product("Music 77777", null, new BigDecimal("7.0")),
+                new Product("Video 88888", null, new BigDecimal("8.0")));
 
 
         Customer customer1 = new Customer("Maria");
@@ -44,9 +44,9 @@ public class Main {
         BigDecimal custoAssinatura = new BigDecimal("99.98");
 
         Collection<Subscription> subscriptions = Arrays.asList(
-                new Subscription(1, custoAssinatura, hoje.minusMonths(3), customer1),
-                new Subscription(2, custoAssinatura, hoje.minusMonths(6L), hoje.minusMonths(2L), customer2),
-                new Subscription(3, custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), customer3)
+                new Subscription(custoAssinatura, hoje.minusMonths(3), customer1),
+                new Subscription(custoAssinatura, hoje.minusMonths(6L), hoje.minusMonths(2L), customer2),
+                new Subscription(custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), customer3)
         );
 
         // 1 OK
@@ -80,7 +80,7 @@ public class Main {
         LocalDateTime hoje = LocalDateTime.now();
 
         subscriptions.stream()
-                .map(subscription -> subscription.getMensalidade().multiply(
+                .map(subscription -> subscription.getMonthlyCost().multiply(
                         new BigDecimal(ChronoUnit.MONTHS.between(subscription.getBegin(), subscription.getEnd().orElse(hoje)))))
                 .forEach(total -> System.out.println("\t> Assinatura custou " + total + " até o momento"));
     }
@@ -110,7 +110,7 @@ public class Main {
                 .filter(payment -> payment.getPurchaseDate().getYear() == ano)
                 .filter(payment -> payment.getPurchaseDate().getMonth().equals(mes))
                 .flatMap(payment -> payment.getProducts().stream())
-                .map(Product::getPreco)
+                .map(Product::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         System.out.printf("\t> Hoje: %s, faturamento no mês %d/%d: %.2f%n", hoje.toLocalDate(), mes.getValue(), ano, faturamentoMes);
@@ -121,7 +121,7 @@ public class Main {
         System.out.println("7 - Qual cliente gastou mais?");
 
         Function<Payment, BigDecimal> reducing = payment -> payment.getProducts().stream()
-                .map(Product::getPreco)
+                .map(Product::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         Map<Customer, BigDecimal> topClientes = payments.stream()
@@ -156,14 +156,14 @@ public class Main {
         payments.stream()
                 .flatMap(payment -> payment.getProducts().stream())
                 .collect(Collectors.groupingBy(product -> product, Collectors.counting()))
-                .forEach((key, value) -> System.out.println("\t> produto: " + key.getNome() + ", qtde: " + value));
+                .forEach((key, value) -> System.out.println("\t> produto: " + key.getName() + ", qtde: " + value));
     }
 
     private static void calcularEImprimiSomaValoresDeUmPagamentoComOptinal(Payment payment) {
         System.out.println("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
         Optional<BigDecimal> optional = payment.getProducts()
                 .stream()
-                .map(Product::getPreco)
+                .map(Product::getPrice)
                 .reduce(BigDecimal::add);
         System.out.println("\t> Total: " + optional.orElse(BigDecimal.ZERO));
     }
@@ -172,7 +172,7 @@ public class Main {
         System.out.println("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
         double value = payment.getProducts()
                 .stream()
-                .map(Product::getPreco)
+                .map(Product::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .doubleValue();
         System.out.println("\t> Total: " + value);
@@ -183,7 +183,7 @@ public class Main {
 
         BigDecimal total = payments.stream()
                 .flatMap(payment -> payment.getProducts().stream())
-                .map(Product::getPreco)
+                .map(Product::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         System.out.println("\t> Total: " + total);

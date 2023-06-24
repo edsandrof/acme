@@ -6,8 +6,7 @@ import java.util.Optional;
 
 public class Subscription {
 
-    private Integer id;
-    private BigDecimal mensalidade;
+    private BigDecimal monthlyCost;
 
     private LocalDateTime begin;
 
@@ -15,33 +14,24 @@ public class Subscription {
 
     private Customer customer;
 
-    public Subscription(Integer id, BigDecimal mensalidade, LocalDateTime begin, Customer customer) {
-        this.id = id;
-        this.mensalidade = mensalidade;
+    public Subscription(BigDecimal monthlyCost, LocalDateTime begin, Customer customer) {
+        this.monthlyCost = monthlyCost;
         this.begin = begin;
-        this.customer = customer;
         this.end = Optional.empty();
+        this.customer = customer;
     }
 
-    public Subscription(Integer id, BigDecimal mensalidade, LocalDateTime begin, LocalDateTime end, Customer customer) {
-        this(id, mensalidade, begin, customer);
+    public Subscription(BigDecimal monthlyCost, LocalDateTime begin, LocalDateTime end, Customer customer) {
+        this(monthlyCost, begin, customer);
         this.end = Optional.of(end);
     }
 
-    public Integer getId() {
-        return id;
+    public BigDecimal getMonthlyCost() {
+        return monthlyCost;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public BigDecimal getMensalidade() {
-        return mensalidade;
-    }
-
-    public void setMensalidade(BigDecimal mensalidade) {
-        this.mensalidade = mensalidade;
+    public void setMonthlyCost(BigDecimal monthlyCost) {
+        this.monthlyCost = monthlyCost;
     }
 
     public LocalDateTime getBegin() {
@@ -56,7 +46,7 @@ public class Subscription {
         this.end = Optional.of(end);
     }
 
-    public Customer getCliente() {
+    public Customer getCustomer() {
         return customer;
     }
 }
