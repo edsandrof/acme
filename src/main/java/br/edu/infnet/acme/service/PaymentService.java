@@ -2,11 +2,12 @@ package br.edu.infnet.acme.service;
 
 import br.edu.infnet.acme.application.exception.PaymentIndexNotFoundException;
 import br.edu.infnet.acme.model.Payment;
+import br.edu.infnet.acme.model.Product;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PaymentService {
     private final List<Payment> payments;
@@ -37,6 +38,12 @@ public class PaymentService {
         return payments.stream()
                 .map(Payment::getPaymentSum)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Map<Product, Long> getAmountProductSold() {
+        return payments.stream()
+                .flatMap(payment -> payment.getProducts().stream())
+                .collect(Collectors.groupingBy(product -> product, Collectors.counting()));
     }
 
     private void validateIndex(int index) {
