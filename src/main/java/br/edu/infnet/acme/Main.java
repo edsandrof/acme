@@ -65,12 +65,17 @@ public class Main {
         System.out.println("\t> Total: " + paymentService.getAllPaymentSum());
 
         System.out.println("5 - Imprima a quantidade de cada Produto vendido:");
-        paymentService.getAmountProductSold().forEach((key, value) -> System.out.println("\t> product: " + key.getName() + ", amount: " + value));
+        paymentService.getAmountProductSold()
+                .forEach((key, value) -> System.out.println("\t> product: " + key.getName() + ", amount: " + value));
 
         System.out.println("6 - Crie um Mapa de <Cliente, List<Produto> , onde Cliente pode ser o nome do cliente:");
-        paymentService.getMapCustomerProducts().forEach((customer, products) -> System.out.println("\t> " + customer + ": " + products));
+        paymentService.getMapCustomerProducts()
+                .forEach((customer, products) -> System.out.println("\t> " + customer + ": " + products));
 
-        qualClienteGastouMais(payments); // 7 OK
+        System.out.println("7 - Qual cliente gastou mais?");
+        paymentService.getTopCustomers().entrySet().stream().max(Map.Entry.comparingByValue())
+                .ifPresent(top -> System.out.println("\t> " + top.getKey() + ", gastou " + top.getValue()));
+
         quantoFoiFaturadoNoMes(payments); // 8 OK
         imprimirTempoEmMesesAssinauturaAtiva(subscriptions); // 10 OK
         imprimirTempoEntreBeginEndAssinaturas(subscriptions); // 11 OK

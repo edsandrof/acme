@@ -1,6 +1,7 @@
 package br.edu.infnet.acme.service;
 
 import br.edu.infnet.acme.application.exception.PaymentIndexNotFoundException;
+import br.edu.infnet.acme.model.Customer;
 import br.edu.infnet.acme.model.Payment;
 import br.edu.infnet.acme.model.Product;
 
@@ -9,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PaymentService {
@@ -56,6 +58,16 @@ public class PaymentService {
                                 Collectors.flatMapping(List::stream, Collectors.toList())
                         )
                 ));
+    }
+
+    public Map<Customer, BigDecimal> getTopCustomers() {
+        Function<Payment, BigDecimal> reducing = payment -> payment.getProducts().stream()
+                .map(Product::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return payments.stream()
+                .collect(Collectors.groupingBy(Payment::getCustomer,
+                        Collectors.reducing(BigDecimal.ZERO, reducing, BigDecimal::add)));
     }
 
     private void validateIndex(int index) {
