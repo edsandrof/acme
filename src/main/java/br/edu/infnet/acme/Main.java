@@ -55,9 +55,9 @@ public class Main {
         System.out.println("2 - Ordene e imprima os pagamentos pela data de compra:");
         paymentService.sortAndPrint(Comparator.comparing(Payment::getPurchaseDate));
 
+        System.out.println("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
+        System.out.println("\t> Total: " + paymentService.getOptionalPaymentSum(0).orElse(BigDecimal.ZERO));
 
-
-        calcularEImprimiSomaValoresDeUmPagamentoComOptinal(payments.get(0)); //3 OK
         calcularEImprimiSomaValoresDeUmPagamentoComDouble(payments.get(0)); // 3 OK
         calcularEImprimirValorTodosPagamentos(payments); // 4 OK
         imprimirQuantidadeCadaProdutoVendido(payments); // 5 OK
