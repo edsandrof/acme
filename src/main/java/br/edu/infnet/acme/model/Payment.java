@@ -1,8 +1,10 @@
 package br.edu.infnet.acme.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public class Payment {
 
@@ -28,6 +30,19 @@ public class Payment {
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public Optional<BigDecimal> getOptionalPaymentSum() {
+        return products.stream()
+                .map(Product::getPrice)
+                .reduce(BigDecimal::add);
+    }
+
+    public double getDoublePaymentSum() {
+        return products.stream()
+                .map(Product::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();
     }
 
     @Override

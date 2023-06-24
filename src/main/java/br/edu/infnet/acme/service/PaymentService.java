@@ -25,23 +25,17 @@ public class PaymentService {
     public Optional<BigDecimal> getOptionalPaymentSum(int index) {
         validateIndex(index);
 
-        return payments.get(index).getProducts()
-                .stream()
-                .map(Product::getPrice)
-                .reduce(BigDecimal::add);
+        return payments.get(index).getOptionalPaymentSum();
     }
 
     public double getDoublePaymentSum(int index) {
         validateIndex(index);
 
-        return payments.get(index).getProducts()
-                .stream()
-                .map(Product::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .doubleValue();
+        return payments.get(index).getDoublePaymentSum();
     }
 
     private void validateIndex(int index) {
+
         if (index > payments.size()) {
             throw new PaymentIndexNotFoundException("Error: Payment with index " + index + " was not found!");
         }
