@@ -1,9 +1,9 @@
 package br.edu.infnet.acme;
 
-import br.edu.infnet.acme.model.Subscription;
 import br.edu.infnet.acme.model.Customer;
 import br.edu.infnet.acme.model.Payment;
 import br.edu.infnet.acme.model.Product;
+import br.edu.infnet.acme.model.Subscription;
 import br.edu.infnet.acme.service.PaymentService;
 
 import java.math.BigDecimal;
@@ -67,7 +67,9 @@ public class Main {
         System.out.println("5 - Imprima a quantidade de cada Produto vendido:");
         paymentService.getAmountProductSold().forEach((key, value) -> System.out.println("\t> product: " + key.getName() + ", amount: " + value));
 
-        criandoMapClienteProduto(payments); // 6 OK
+        System.out.println("6 - Crie um Mapa de <Cliente, List<Produto> , onde Cliente pode ser o nome do cliente:");
+        paymentService.getMapCustomerProducts().forEach((customer, products) -> System.out.println("\t> " + customer + ": " + products));
+
         qualClienteGastouMais(payments); // 7 OK
         quantoFoiFaturadoNoMes(payments); // 8 OK
         imprimirTempoEmMesesAssinauturaAtiva(subscriptions); // 10 OK
