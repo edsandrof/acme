@@ -4,7 +4,7 @@ import br.edu.infnet.acme.model.Subscription;
 import br.edu.infnet.acme.model.Customer;
 import br.edu.infnet.acme.model.Payment;
 import br.edu.infnet.acme.model.Product;
-import br.edu.infnet.acme.service.PaymentFormatter;
+import br.edu.infnet.acme.service.PaymentService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -49,9 +49,14 @@ public class Main {
                 new Subscription(custoAssinatura, hoje.minusMonths(8L), hoje.minusMonths(3L), customer3)
         );
 
-        // 1 OK
 
-        ordernarEImprimirPagamentoPelaDataCompra(payments); // 2 OK
+        PaymentService paymentService = new PaymentService(payments);
+
+        System.out.println("2 - Ordene e imprima os pagamentos pela data de compra:");
+        paymentService.sortAndPrint(Comparator.comparing(Payment::getPurchaseDate));
+
+
+
         calcularEImprimiSomaValoresDeUmPagamentoComOptinal(payments.get(0)); //3 OK
         calcularEImprimiSomaValoresDeUmPagamentoComDouble(payments.get(0)); // 3 OK
         calcularEImprimirValorTodosPagamentos(payments); // 4 OK
@@ -190,12 +195,11 @@ public class Main {
     }
 
     private static void ordernarEImprimirPagamentoPelaDataCompra(Collection<Payment> payments) {
-        PaymentFormatter formatador = new PaymentFormatter(new Locale("pt", "BR"));
 
         System.out.println("2 - Ordene e imprima os pagamentos pela data de compra:");
         payments
                 .stream()
                 .sorted(Comparator.comparing(Payment::getPurchaseDate))
-                .forEach(payment -> System.out.println(formatador.format(payment)));
+                .forEach(System.out::println);
     }
 }
