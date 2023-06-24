@@ -58,7 +58,9 @@ public class Main {
         System.out.println("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
         System.out.println("\t> Total: " + paymentService.getOptionalPaymentSum(0).orElse(BigDecimal.ZERO));
 
-        calcularEImprimiSomaValoresDeUmPagamentoComDouble(payments.get(0)); // 3 OK
+        System.out.println("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
+        System.out.println("\t> Total: " + paymentService.getDoublePaymentSum(0));
+
         calcularEImprimirValorTodosPagamentos(payments); // 4 OK
         imprimirQuantidadeCadaProdutoVendido(payments); // 5 OK
         criandoMapClienteProduto(payments); // 6 OK

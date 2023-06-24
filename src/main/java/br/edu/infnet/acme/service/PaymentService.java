@@ -23,14 +23,27 @@ public class PaymentService {
     }
 
     public Optional<BigDecimal> getOptionalPaymentSum(int index) {
-        try {
-            return payments.get(index).getProducts()
-                    .stream()
-                    .map(Product::getPrice)
-                    .reduce(BigDecimal::add);
+        validateIndex(index);
 
-        } catch (IndexOutOfBoundsException e) {
-            throw new PaymentIndexNotFoundException("Error: Payment with index " + index + " was not found!" + e.getMessage());
+        return payments.get(index).getProducts()
+                .stream()
+                .map(Product::getPrice)
+                .reduce(BigDecimal::add);
+    }
+
+    public double getDoublePaymentSum(int index) {
+        validateIndex(index);
+
+        return payments.get(index).getProducts()
+                .stream()
+                .map(Product::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();
+    }
+
+    private void validateIndex(int index) {
+        if (index > payments.size()) {
+            throw new PaymentIndexNotFoundException("Error: Payment with index " + index + " was not found!");
         }
     }
 }
