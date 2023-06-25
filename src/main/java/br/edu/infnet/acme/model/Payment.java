@@ -2,7 +2,6 @@ package br.edu.infnet.acme.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,11 +45,5 @@ public class Payment {
         return products.stream()
                 .map(Product::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @Override
-    public String toString() {
-        return "\t> customer: " + customer.getName() + ", " +
-                "purchase date: " + purchaseDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 }

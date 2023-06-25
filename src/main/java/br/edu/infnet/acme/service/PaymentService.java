@@ -7,6 +7,7 @@ import br.edu.infnet.acme.model.Product;
 
 import java.math.BigDecimal;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class PaymentService {
     public void sortAndPrint(Comparator<Payment> comparator) {
         payments.stream()
                 .sorted(comparator)
+                .map(p -> String.format("\t> %s's payment purchase date: %s", p.getCustomer().getName(), p.getPurchaseDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))))
                 .forEach(System.out::println);
     }
 
