@@ -89,7 +89,8 @@ public class Main {
         System.out.println("11 - Imprima o tempo de meses entre o start e end de todas assinaturas:");
         subscriptionService.printCustomerSubscriptionDurations();
 
-        calcularValorPagoEmCadaAssinaturaAteAgora(subscriptions); // 12 ok
+        System.out.println("12 - Calcule o valor pago em cada assinatura até o momento:");
+        subscriptionService.printCustomerTotalCost();
     }
 
     private static void imprimirTempoEntreBeginEndAssinaturas(Collection<Subscription> subscriptions) {

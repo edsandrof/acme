@@ -55,4 +55,8 @@ public class Subscription {
         LocalDateTime today = LocalDateTime.now();
         return ChronoUnit.MONTHS.between(begin, end.orElse(today));
     }
+
+    public BigDecimal getTotalCost() {
+        return getMonthlyCost().multiply(new BigDecimal(getDuration()));
+    }
 }

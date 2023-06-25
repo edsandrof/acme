@@ -33,4 +33,10 @@ public class SubscriptionService {
                 .forEach(System.out::println);
 
     }
+
+    public void printCustomerTotalCost() {
+        subscriptions.stream()
+                .map(s -> String.format("\t> %s's subscription cost %.2f (%.2f monthly)", s.getCustomer().getName(), s.getTotalCost(), s.getMonthlyCost()))
+                .forEach(System.out::println);
+    }
 }
