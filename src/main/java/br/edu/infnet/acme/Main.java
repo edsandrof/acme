@@ -1,11 +1,11 @@
 package br.edu.infnet.acme;
 
-import br.edu.infnet.acme.model.Customer;
-import br.edu.infnet.acme.model.Payment;
-import br.edu.infnet.acme.model.Product;
-import br.edu.infnet.acme.model.Subscription;
-import br.edu.infnet.acme.service.PaymentService;
-import br.edu.infnet.acme.service.SubscriptionService;
+import br.edu.infnet.acme.domain.model.Customer;
+import br.edu.infnet.acme.domain.model.Payment;
+import br.edu.infnet.acme.domain.model.Product;
+import br.edu.infnet.acme.domain.model.Subscription;
+import br.edu.infnet.acme.domain.service.PaymentService;
+import br.edu.infnet.acme.domain.service.SubscriptionService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -42,12 +42,12 @@ public class Main {
                 new Payment(list2, today.minusDays(1L), customer2),
                 new Payment(list2, today.minusMonths(1), customer2));
 
-        BigDecimal custoAssinatura = new BigDecimal("99.98");
+        BigDecimal monthlyCost = new BigDecimal("99.98");
 
         List<Subscription> subscriptions = Arrays.asList(
-                new Subscription(custoAssinatura, today.minusMonths(3), customer1),
-                new Subscription(custoAssinatura, today.minusMonths(6L), today.minusMonths(2L), customer2),
-                new Subscription(custoAssinatura, today.minusMonths(8L), today.minusMonths(3L), customer3)
+                new Subscription(monthlyCost, today.minusMonths(3), customer1),
+                new Subscription(monthlyCost, today.minusMonths(6L), today.minusMonths(2L), customer2),
+                new Subscription(monthlyCost, today.minusMonths(8L), today.minusMonths(3L), customer3)
         );
 
 
@@ -76,7 +76,7 @@ public class Main {
 
         System.out.println("7 - Qual cliente gastou mais?");
         paymentService.getTopCustomers().entrySet().stream().max(Map.Entry.comparingByValue())
-                .ifPresent(top -> System.out.println("\t> " + top.getKey() + ", gastou " + top.getValue()));
+                .ifPresent(top -> System.out.println("\t> " + top.getKey().getName() + " spent " + top.getValue()));
 
         System.out.println("8 - Quanto foi faturado em um determinado mês?");
         Month lastMonth = today.getMonth().minus(1);

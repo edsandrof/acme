@@ -1,4 +1,4 @@
-package br.edu.infnet.acme.model;
+package br.edu.infnet.acme.domain.model;
 
 public class Customer {
 

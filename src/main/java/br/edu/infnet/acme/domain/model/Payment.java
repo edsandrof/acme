@@ -1,4 +1,4 @@
-package br.edu.infnet.acme.model;
+package br.edu.infnet.acme.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

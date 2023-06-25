@@ -1,9 +1,9 @@
-package br.edu.infnet.acme.service;
+package br.edu.infnet.acme.domain.service;
 
 import br.edu.infnet.acme.application.exception.PaymentIndexNotFoundException;
-import br.edu.infnet.acme.model.Customer;
-import br.edu.infnet.acme.model.Payment;
-import br.edu.infnet.acme.model.Product;
+import br.edu.infnet.acme.domain.model.Customer;
+import br.edu.infnet.acme.domain.model.Payment;
+import br.edu.infnet.acme.domain.model.Product;
 
 import java.math.BigDecimal;
 import java.time.Month;

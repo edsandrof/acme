@@ -1,6 +1,6 @@
-package br.edu.infnet.acme.service;
+package br.edu.infnet.acme.domain.service;
 
-import br.edu.infnet.acme.model.Subscription;
+import br.edu.infnet.acme.domain.model.Subscription;
 
 import java.time.LocalDateTime;
 import java.util.List;
