@@ -6,11 +6,14 @@ import br.edu.infnet.acme.domain.model.Product;
 import br.edu.infnet.acme.domain.model.Subscription;
 import br.edu.infnet.acme.domain.service.PaymentService;
 import br.edu.infnet.acme.domain.service.SubscriptionService;
+import br.edu.infnet.acme.infrastructure.factory.CustomerFactory;
+import br.edu.infnet.acme.infrastructure.factory.PaymentFactory;
+import br.edu.infnet.acme.infrastructure.factory.ProductFactory;
+import br.edu.infnet.acme.infrastructure.factory.SubscriptionFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -18,38 +21,10 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
 
-        List<Product> list1 = Arrays.asList(
-                new Product("Music 11111", null, new BigDecimal("10.0")),
-                new Product("Video 22222", null, new BigDecimal("20.0")),
-                new Product("Image 33333", null, new BigDecimal("30.0")),
-                new Product("Music 44444", null, new BigDecimal("40.0")));
-
-        List<Product> list2 = Arrays.asList(
-                new Product("Video 55555", null, new BigDecimal("5.0")),
-                new Product("Image 66666", null, new BigDecimal("6.0")),
-                new Product("Music 77777", null, new BigDecimal("7.0")),
-                new Product("Video 88888", null, new BigDecimal("8.0")));
-
-
-        Customer customer1 = new Customer("Maria");
-        Customer customer2 = new Customer("Jose");
-        Customer customer3 = new Customer("Pedro");
-
-        LocalDateTime today = LocalDateTime.now();
-
-        List<Payment> payments = Arrays.asList(
-                new Payment(list1, today, customer1),
-                new Payment(list2, today.minusDays(1L), customer2),
-                new Payment(list2, today.minusMonths(1), customer2));
-
-        BigDecimal monthlyCost = new BigDecimal("99.98");
-
-        List<Subscription> subscriptions = Arrays.asList(
-                new Subscription(monthlyCost, today.minusMonths(3), customer1),
-                new Subscription(monthlyCost, today.minusMonths(6L), today.minusMonths(2L), customer2),
-                new Subscription(monthlyCost, today.minusMonths(8L), today.minusMonths(3L), customer3)
-        );
-
+        List<Customer> customers = CustomerFactory.getCustomers();
+        List<Product> products = ProductFactory.getProducts();
+        List<Payment> payments = PaymentFactory.getPayments(products, customers);
+        List<Subscription> subscriptions = SubscriptionFactory.getSubscriptions(customers);
 
         PaymentService paymentService = new PaymentService(payments);
         SubscriptionService subscriptionService = new SubscriptionService(subscriptions);
@@ -72,13 +47,14 @@ public class Main {
 
         System.out.println("6 - Crie um Mapa de <Cliente, List<Produto> , onde Cliente pode ser o nome do cliente:");
         paymentService.getMapCustomerProducts()
-                .forEach((customer, products) -> System.out.println("\t> " + customer + ": " + products));
+                .forEach((customer, productList) -> System.out.println("\t> " + customer + ": " + productList));
 
         System.out.println("7 - Qual cliente gastou mais?");
         paymentService.getTopCustomers().entrySet().stream().max(Map.Entry.comparingByValue())
                 .ifPresent(top -> System.out.println("\t> " + top.getKey().getName() + " spent " + top.getValue()));
 
         System.out.println("8 - Quanto foi faturado em um determinado mês?");
+        LocalDateTime today = LocalDateTime.now();
         Month lastMonth = today.getMonth().minus(1);
         System.out.printf("\t> Today: %s, billed in %d-%02d: %.2f%n", today.toLocalDate(), today.getYear(), lastMonth.getValue(),
                 paymentService.howMuchBilledMonth(lastMonth, today.getYear()));
