@@ -4,6 +4,7 @@ import br.edu.infnet.acme.domain.model.Customer;
 import br.edu.infnet.acme.domain.model.Payment;
 import br.edu.infnet.acme.domain.model.Product;
 import br.edu.infnet.acme.domain.model.Subscription;
+import br.edu.infnet.acme.domain.model.impl.MonthlySubscription;
 import br.edu.infnet.acme.infrastructure.factory.CustomerFactory;
 import br.edu.infnet.acme.infrastructure.factory.PaymentFactory;
 import br.edu.infnet.acme.infrastructure.factory.ProductFactory;
@@ -22,7 +23,7 @@ public class ExerciseList1Service {
         List<Customer> customers = CustomerFactory.getCustomers();
         List<Product> products = ProductFactory.getProducts();
         List<Payment> payments = PaymentFactory.getPayments(products, customers);
-        List<Subscription> subscriptions = SubscriptionFactory.getSubscriptions(customers);
+        List<Subscription> subscriptions = SubscriptionFactory.getSubscriptions(customers, new MonthlySubscription());
 
         PaymentService paymentService = new PaymentService(payments);
         SubscriptionService subscriptionService = new SubscriptionService(subscriptions);

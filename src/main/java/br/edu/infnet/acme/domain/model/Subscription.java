@@ -7,32 +7,31 @@ import java.util.Optional;
 
 public class Subscription {
 
-    private BigDecimal monthlyCost;
+    private final BigDecimal monthlyCost;
 
-    private LocalDateTime begin;
+    private final LocalDateTime begin;
 
     private Optional<LocalDateTime> end;
 
-    private Customer customer;
+    private final Customer customer;
 
-    public Subscription(BigDecimal monthlyCost, LocalDateTime begin, Customer customer) {
+    private SubscriptionType type;
+
+    public Subscription(BigDecimal monthlyCost, LocalDateTime begin, Customer customer, SubscriptionType type) {
         this.monthlyCost = monthlyCost;
         this.begin = begin;
         this.end = Optional.empty();
         this.customer = customer;
+        this.type = type;
     }
 
-    public Subscription(BigDecimal monthlyCost, LocalDateTime begin, LocalDateTime end, Customer customer) {
-        this(monthlyCost, begin, customer);
+    public Subscription(BigDecimal monthlyCost, LocalDateTime begin, LocalDateTime end, Customer customer, SubscriptionType type) {
+        this(monthlyCost, begin, customer, type);
         this.end = Optional.of(end);
     }
 
     public BigDecimal getMonthlyCost() {
         return monthlyCost;
-    }
-
-    public void setMonthlyCost(BigDecimal monthlyCost) {
-        this.monthlyCost = monthlyCost;
     }
 
     public LocalDateTime getBegin() {
@@ -51,6 +50,14 @@ public class Subscription {
         return customer;
     }
 
+    public SubscriptionType getType() {
+        return type;
+    }
+
+    public void setType(SubscriptionType type) {
+        this.type = type;
+    }
+
     public Long getDuration() {
         LocalDateTime today = LocalDateTime.now();
         return ChronoUnit.MONTHS.between(begin, end.orElse(today));
@@ -58,5 +65,9 @@ public class Subscription {
 
     public BigDecimal getTotalCost() {
         return getMonthlyCost().multiply(new BigDecimal(getDuration()));
+    }
+
+    public BigDecimal getFee() {
+        return type.getSubscriptionFee(getTotalCost());
     }
 }
