@@ -39,4 +39,10 @@ public class SubscriptionService {
                 .map(s -> String.format("\t> %s's subscription cost %.2f (%.2f monthly)", s.getCustomer().getName(), s.getTotalCost(), s.getMonthlyCost()))
                 .forEach(System.out::println);
     }
+
+    public void printFeeCalc() {
+        subscriptions.stream()
+                .map(s -> String.format("\t> %s's subscription - total cost: %.2f, fee: %.2f", s.getCustomer().getName(), s.getTotalCost(), s.getFee()))
+                .forEach(System.out::println);
+    }
 }

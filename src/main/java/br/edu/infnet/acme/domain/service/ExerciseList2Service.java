@@ -13,9 +13,14 @@ public class ExerciseList2Service {
                 SubscriptionFactory.getQuarterlySubscription()
         );
 
-        subscriptions.stream()
-                .map(s -> String.format("\t> %s's subscription - total cost: %.2f, fee: %.2f", s.getCustomer().getName(), s.getTotalCost(), s.getFee()))
-                .forEach(System.out::println);
+        SubscriptionService subscriptionService = new SubscriptionService(subscriptions);
+
+        System.out.println("1 - Crie 3 tipos de assinatura, anual, semestral e trimestral e um");
+        System.out.println("    método para calcular uma taxa para cada assinatura:");
+        subscriptionService.printFeeCalc();
+
+
+
 
     }
 }
