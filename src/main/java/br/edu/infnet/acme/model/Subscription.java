@@ -2,6 +2,7 @@ package br.edu.infnet.acme.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 public class Subscription {
@@ -48,5 +49,10 @@ public class Subscription {
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public Long getDuration() {
+        LocalDateTime today = LocalDateTime.now();
+        return ChronoUnit.MONTHS.between(begin, end.orElse(today));
     }
 }

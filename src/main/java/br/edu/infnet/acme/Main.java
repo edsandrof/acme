@@ -5,6 +5,7 @@ import br.edu.infnet.acme.model.Payment;
 import br.edu.infnet.acme.model.Product;
 import br.edu.infnet.acme.model.Subscription;
 import br.edu.infnet.acme.service.PaymentService;
+import br.edu.infnet.acme.service.SubscriptionService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,7 +44,7 @@ public class Main {
 
         BigDecimal custoAssinatura = new BigDecimal("99.98");
 
-        Collection<Subscription> subscriptions = Arrays.asList(
+        List<Subscription> subscriptions = Arrays.asList(
                 new Subscription(custoAssinatura, today.minusMonths(3), customer1),
                 new Subscription(custoAssinatura, today.minusMonths(6L), today.minusMonths(2L), customer2),
                 new Subscription(custoAssinatura, today.minusMonths(8L), today.minusMonths(3L), customer3)
@@ -51,6 +52,7 @@ public class Main {
 
 
         PaymentService paymentService = new PaymentService(payments);
+        SubscriptionService subscriptionService = new SubscriptionService(subscriptions);
 
         System.out.println("2 - Ordene e imprima os pagamentos pela data de compra:");
         paymentService.sortAndPrint(Comparator.comparing(Payment::getPurchaseDate));
@@ -81,8 +83,12 @@ public class Main {
         System.out.printf("\t> Today: %s, billed in %d-%02d: %.2f%n", today.toLocalDate(), today.getYear(), lastMonth.getValue(),
                 paymentService.howMuchBilledMonth(lastMonth, today.getYear()));
 
-        imprimirTempoEmMesesAssinauturaAtiva(subscriptions); // 10 OK
-        imprimirTempoEntreBeginEndAssinaturas(subscriptions); // 11 OK
+        System.out.println("10 - Imprima o tempo em meses de alguma assinatura ainda ativa:");
+        System.out.printf("\t> Subscription active for %d months%n", subscriptionService.getHowManyActiveSubscriptionMonths().orElse(0L));
+
+        System.out.println("11 - Imprima o tempo de meses entre o start e end de todas assinaturas:");
+        subscriptionService.printCustomerSubscriptionDurations();
+
         calcularValorPagoEmCadaAssinaturaAteAgora(subscriptions); // 12 ok
     }
 
