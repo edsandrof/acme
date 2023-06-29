@@ -69,5 +69,6 @@ public class Subscription {
 
     public BigDecimal getFee() {
         return type.getSubscriptionFee(getTotalCost());
+        return type.getFee(getTotalCost());
     }
 }
