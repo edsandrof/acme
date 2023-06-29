@@ -11,5 +11,5 @@ public interface SubscriptionType {
                 .setScale(2, RoundingMode.UP);
     }
     BigDecimal getSubscriptionFeePercent();
-    int getDurationMonths();
+    long getDurationMonths();
 }

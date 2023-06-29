@@ -15,12 +15,14 @@ public class ExerciseList2Service {
 
         SubscriptionService subscriptionService = new SubscriptionService(subscriptions);
 
-        System.out.println("1 - Crie 3 tipos de assinatura, anual, semestral e trimestral e um");
-        System.out.println("    método para calcular uma taxa para cada assinatura:");
+        System.out.println("1 - Crie 3 tipos de assinatura, anual, semestral e trimestral e um método para calcular uma taxa para cada assinatura:");
         subscriptionService.printFeeCalc();
 
+        System.out.println("2 - Crie um atributo para controlar assinaturas com atraso de pagamento:");
 
-
-
+        subscriptionService.printPaymentOverdue();
+        subscriptionService.getSubscriptions().get(0).pay();
+        subscriptionService.getSubscriptions().get(2).pay();
+        subscriptionService.printPaymentOverdue();
     }
 }

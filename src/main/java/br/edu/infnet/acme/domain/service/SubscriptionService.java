@@ -42,7 +42,13 @@ public class SubscriptionService {
 
     public void printFeeCalc() {
         subscriptions.stream()
-                .map(s -> String.format("\t> %s's subscription - total cost: %.2f, fee: %.2f", s.getCustomer().getName(), s.getTotalCost(), s.getFee()))
+                .map(s -> String.format("\t> %s's subscription - total cost: %.2f, fee cost: %.2f", s.getCustomer().getName(), s.getTotalCost(), s.getFee()))
+                .forEach(System.out::println);
+    }
+
+    public void printPaymentOverdue() {
+        subscriptions.stream()
+                .map(s -> String.format("\t> Is the %s's payment overdue? [%b]", s.getCustomer().getName(), s.isPaymentOverdue()))
                 .forEach(System.out::println);
     }
 }

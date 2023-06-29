@@ -17,12 +17,15 @@ public class Subscription {
 
     private SubscriptionType type;
 
+    private Optional<LocalDateTime> lastPayment;
+
     public Subscription(BigDecimal monthlyCost, LocalDateTime begin, Customer customer, SubscriptionType type) {
         this.monthlyCost = monthlyCost;
         this.begin = begin;
         this.end = Optional.empty();
         this.customer = customer;
         this.type = type;
+        this.lastPayment = Optional.empty();
     }
 
     public Subscription(BigDecimal monthlyCost, LocalDateTime begin, LocalDateTime end, Customer customer, SubscriptionType type) {
@@ -58,6 +61,10 @@ public class Subscription {
         this.type = type;
     }
 
+    public Optional<LocalDateTime> getLastPayment() {
+        return lastPayment;
+    }
+
     public Long getDuration() {
         LocalDateTime today = LocalDateTime.now();
         return ChronoUnit.MONTHS.between(begin, end.orElse(today));
@@ -68,7 +75,17 @@ public class Subscription {
     }
 
     public BigDecimal getFee() {
-        return type.getSubscriptionFee(getTotalCost());
         return type.getFee(getTotalCost());
+    }
+
+    public boolean isPaymentOverdue() {
+        LocalDateTime paymentShouldHaveBeenMadeOn = LocalDateTime.now().minusMonths(type.getDurationMonths());
+
+        return lastPayment.isEmpty() || lastPayment.get().isBefore(paymentShouldHaveBeenMadeOn);
+    }
+
+    public void pay() {
+        System.out.printf("\t Paying %s's subscription now...%n", customer.getName());
+        lastPayment = Optional.of(LocalDateTime.now());
     }
 }
