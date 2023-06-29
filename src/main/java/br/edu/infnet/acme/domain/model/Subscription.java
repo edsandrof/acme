@@ -1,5 +1,7 @@
 package br.edu.infnet.acme.domain.model;
 
+import br.edu.infnet.acme.application.exception.PaymentOverdueException;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -87,5 +89,14 @@ public class Subscription {
     public void pay() {
         System.out.printf("\t Paying %s's subscription now...%n", customer.getName());
         lastPayment = Optional.of(LocalDateTime.now());
+    }
+
+    public void rentMovie(Product movie) {
+        System.out.printf("\t Checking %s's subscription state...%n", customer.getName());
+        if (isPaymentOverdue()) {
+            throw new PaymentOverdueException(customer.getName() + ", your subscription is overdue.");
+        }
+
+        System.out.printf("\t %s, you have successfully rented the %s product!%n", customer.getName(), movie.getName());
     }
 }
