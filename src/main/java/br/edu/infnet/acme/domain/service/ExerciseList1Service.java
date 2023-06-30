@@ -18,10 +18,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import static br.edu.infnet.acme.infrastructure.util.Constants.OUTPUT_TOTAL_RESULT;
-
 @Slf4j
 public class ExerciseList1Service {
+
+    private static final String LOG_PLACEHOLDER = "{} {}";
+    private static final String OUTPUT_TOTAL_RESULT = "Total:";
 
     private ExerciseList1Service() {
         throw new IllegalStateException("Utility class");
@@ -41,13 +42,13 @@ public class ExerciseList1Service {
         paymentService.sortAndPrint(Comparator.comparing(Payment::getPurchaseDate));
 
         log.info("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
-        log.info("{} {}", OUTPUT_TOTAL_RESULT, paymentService.getOptionalPaymentSum(0).orElse(BigDecimal.ZERO));
+        log.info(LOG_PLACEHOLDER, OUTPUT_TOTAL_RESULT, paymentService.getOptionalPaymentSum(0).orElse(BigDecimal.ZERO));
 
         log.info("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
-        log.info("{} {}", OUTPUT_TOTAL_RESULT, paymentService.getDoublePaymentSum(0));
+        log.info(LOG_PLACEHOLDER, OUTPUT_TOTAL_RESULT, paymentService.getDoublePaymentSum(0));
 
         log.info("4 - Calcule o Valor de todos os pagamentos da Lista de pagamentos:");
-        log.info("{} {}", OUTPUT_TOTAL_RESULT, paymentService.getAllPaymentSum());
+        log.info(LOG_PLACEHOLDER, OUTPUT_TOTAL_RESULT, paymentService.getAllPaymentSum());
 
         log.info("5 - Imprima a quantidade de cada Produto vendido:");
         paymentService.getAmountProductSold()

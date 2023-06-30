@@ -11,6 +11,4 @@ public abstract class Constants {
     public static final long SIX_MONTHS = 6L;
     public static final long TWELVE_MONTHS = 12L;
 
-    public static final String OUTPUT_TOTAL_RESULT = "Total: ";
-
 }
