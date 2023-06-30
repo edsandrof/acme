@@ -17,6 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import static br.edu.infnet.acme.infrastructure.util.Constants.OUTPUT_TOTAL_RESULT;
+
 public class ExerciseList1Service {
 
     private ExerciseList1Service() {
@@ -37,13 +39,13 @@ public class ExerciseList1Service {
         paymentService.sortAndPrint(Comparator.comparing(Payment::getPurchaseDate));
 
         System.out.println("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
-        System.out.println("\t> Total: " + paymentService.getOptionalPaymentSum(0).orElse(BigDecimal.ZERO));
+        System.out.println(OUTPUT_TOTAL_RESULT + paymentService.getOptionalPaymentSum(0).orElse(BigDecimal.ZERO));
 
         System.out.println("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
-        System.out.println("\t> Total: " + paymentService.getDoublePaymentSum(0));
+        System.out.println(OUTPUT_TOTAL_RESULT + paymentService.getDoublePaymentSum(0));
 
         System.out.println("4 - Calcule o Valor de todos os pagamentos da Lista de pagamentos:");
-        System.out.println("\t> Total: " + paymentService.getAllPaymentSum());
+        System.out.println(OUTPUT_TOTAL_RESULT + paymentService.getAllPaymentSum());
 
         System.out.println("5 - Imprima a quantidade de cada Produto vendido:");
         paymentService.getAmountProductSold()
