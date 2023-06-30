@@ -7,6 +7,10 @@ import java.util.List;
 
 public class ProductFactory {
 
+    private ProductFactory() {
+        throw new IllegalStateException("Factory class");
+    }
+
     public static List<Product> getProducts() {
         return List.of(
                 new Product("Music 11111", null, new BigDecimal("10.0")),

@@ -9,6 +9,11 @@ import br.edu.infnet.acme.infrastructure.factory.SubscriptionFactory;
 import java.util.List;
 
 public class ExerciseList2Service {
+
+    private ExerciseList2Service() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void runExerciseList2() {
         List<Subscription> subscriptions = List.of(
                 SubscriptionFactory.getAnnualSubscription(),

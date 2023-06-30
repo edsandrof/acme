@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class SubscriptionFactory {
+
+    private SubscriptionFactory() {
+        throw new IllegalStateException("Factory class");
+    }
     private static final BigDecimal MONTHLY_COST = new BigDecimal("99.98");
     private static final LocalDateTime TODAY = LocalDateTime.now();
 

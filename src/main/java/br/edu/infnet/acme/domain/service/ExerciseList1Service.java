@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ExerciseList1Service {
+
+    private ExerciseList1Service() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void runExerciseList1() {
 
         List<Customer> customers = CustomerFactory.getCustomers();

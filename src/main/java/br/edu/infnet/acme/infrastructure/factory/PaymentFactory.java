@@ -9,6 +9,10 @@ import java.util.List;
 
 public class PaymentFactory {
 
+    private PaymentFactory() {
+        throw new IllegalStateException("Factory class");
+    }
+
     public static List<Payment> getPayments(List<Product> products, List<Customer> customers) {
         LocalDateTime today = LocalDateTime.now();
 
