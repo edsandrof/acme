@@ -2,14 +2,16 @@ package br.edu.infnet.acme;
 
 import br.edu.infnet.acme.domain.service.ExerciseList1Service;
 import br.edu.infnet.acme.domain.service.ExerciseList2Service;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Main {
 
     public static void main(String[] args) {
-        System.out.printf(" --- Exercise list 1 --- %n%n");
+        log.info(" --- Exercise list 1 --- ");
         ExerciseList1Service.runExerciseList1();
 
-        System.out.printf("%n --- Exercise list 2 --- %n%n");
+        log.info(" --- Exercise list 2 --- ");
         ExerciseList2Service.runExerciseList2();
     }
 }

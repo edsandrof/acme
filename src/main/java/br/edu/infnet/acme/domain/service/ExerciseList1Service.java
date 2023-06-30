@@ -9,6 +9,7 @@ import br.edu.infnet.acme.infrastructure.factory.CustomerFactory;
 import br.edu.infnet.acme.infrastructure.factory.PaymentFactory;
 import br.edu.infnet.acme.infrastructure.factory.ProductFactory;
 import br.edu.infnet.acme.infrastructure.factory.SubscriptionFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 import static br.edu.infnet.acme.infrastructure.util.Constants.OUTPUT_TOTAL_RESULT;
 
+@Slf4j
 public class ExerciseList1Service {
 
     private ExerciseList1Service() {
@@ -35,43 +37,43 @@ public class ExerciseList1Service {
         PaymentService paymentService = new PaymentService(payments);
         SubscriptionService subscriptionService = new SubscriptionService(subscriptions);
 
-        System.out.println("2 - Ordene e imprima os pagamentos pela data de compra:");
+        log.info("2 - Ordene e imprima os pagamentos pela data de compra:");
         paymentService.sortAndPrint(Comparator.comparing(Payment::getPurchaseDate));
 
-        System.out.println("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
-        System.out.println(OUTPUT_TOTAL_RESULT + paymentService.getOptionalPaymentSum(0).orElse(BigDecimal.ZERO));
+        log.info("3 (a) - Calcule e Imprima a soma dos valores de um pagamento com optional:");
+        log.info("{} {}", OUTPUT_TOTAL_RESULT, paymentService.getOptionalPaymentSum(0).orElse(BigDecimal.ZERO));
 
-        System.out.println("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
-        System.out.println(OUTPUT_TOTAL_RESULT + paymentService.getDoublePaymentSum(0));
+        log.info("3 (b) - Calcule e Imprima a soma dos valores de um pagamento com double:");
+        log.info("{} {}", OUTPUT_TOTAL_RESULT, paymentService.getDoublePaymentSum(0));
 
-        System.out.println("4 - Calcule o Valor de todos os pagamentos da Lista de pagamentos:");
-        System.out.println(OUTPUT_TOTAL_RESULT + paymentService.getAllPaymentSum());
+        log.info("4 - Calcule o Valor de todos os pagamentos da Lista de pagamentos:");
+        log.info("{} {}", OUTPUT_TOTAL_RESULT, paymentService.getAllPaymentSum());
 
-        System.out.println("5 - Imprima a quantidade de cada Produto vendido:");
+        log.info("5 - Imprima a quantidade de cada Produto vendido:");
         paymentService.getAmountProductSold()
-                .forEach((key, value) -> System.out.println("\t> product: " + key.getName() + ", amount: " + value));
+                .forEach((key, value) -> log.info("product: {}, amount: {}", key.getName(), value));
 
-        System.out.println("6 - Crie um Mapa de <Cliente, List<Produto> , onde Cliente pode ser o nome do cliente:");
+        log.info("6 - Crie um Mapa de <Cliente, List<Produto> , onde Cliente pode ser o nome do cliente:");
         paymentService.getMapCustomerProducts()
-                .forEach((customer, productList) -> System.out.println("\t> " + customer + ": " + productList));
+                .forEach((customer, productList) -> log.info("{}: {}", customer, productList));
 
-        System.out.println("7 - Qual cliente gastou mais?");
+        log.info("7 - Qual cliente gastou mais?");
         paymentService.getTopCustomers().entrySet().stream().max(Map.Entry.comparingByValue())
-                .ifPresent(top -> System.out.println("\t> " + top.getKey().getName() + " spent " + top.getValue()));
+                .ifPresent(top -> log.info("{} spent {}", top.getKey().getName(), top.getValue()));
 
-        System.out.println("8 - Quanto foi faturado em um determinado mês?");
+        log.info("8 - Quanto foi faturado em um determinado mês?");
         LocalDateTime today = LocalDateTime.now();
         Month lastMonth = today.getMonth().minus(1);
-        System.out.printf("\t> Today: %s, billed in %d-%02d: %.2f%n", today.toLocalDate(), today.getYear(), lastMonth.getValue(),
-                paymentService.howMuchBilledMonth(lastMonth, today.getYear()));
+        log.info(String.format("Today: %s, billed in %d-%02d: %.2f", today.toLocalDate(), today.getYear(), lastMonth.getValue(),
+                paymentService.howMuchBilledMonth(lastMonth, today.getYear())));
 
-        System.out.println("10 - Imprima o tempo em meses de alguma assinatura ainda ativa:");
-        System.out.printf("\t> Subscription active for %d months%n", subscriptionService.getHowManyActiveSubscriptionMonths().orElse(0L));
+        log.info("10 - Imprima o tempo em meses de alguma assinatura ainda ativa:");
+        log.info("Subscription active for {} months", subscriptionService.getHowManyActiveSubscriptionMonths().orElse(0L));
 
-        System.out.println("11 - Imprima o tempo de meses entre o start e end de todas assinaturas:");
+        log.info("11 - Imprima o tempo de meses entre o start e end de todas assinaturas:");
         subscriptionService.printCustomerSubscriptionDurations();
 
-        System.out.println("12 - Calcule o valor pago em cada assinatura até o momento:");
+        log.info("12 - Calcule o valor pago em cada assinatura até o momento:");
         subscriptionService.printCustomerTotalCost();
     }
 }

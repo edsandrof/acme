@@ -4,6 +4,7 @@ import br.edu.infnet.acme.application.exception.PaymentIndexNotFoundException;
 import br.edu.infnet.acme.domain.model.Customer;
 import br.edu.infnet.acme.domain.model.Payment;
 import br.edu.infnet.acme.domain.model.Product;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.Month;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class PaymentService {
     private final List<Payment> payments;
 
@@ -25,9 +27,9 @@ public class PaymentService {
     public void sortAndPrint(Comparator<Payment> comparator) {
         payments.stream()
                 .sorted(comparator)
-                .map(p -> String.format("\t> %s's payment purchase date: %s", p.getCustomer().getName(),
+                .map(p -> String.format("%s's payment purchase date: %s", p.getCustomer().getName(),
                         p.getPurchaseDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))))
-                .forEach(System.out::println);
+                .forEach(log::info);
     }
 
     public Optional<BigDecimal> getOptionalPaymentSum(int index) {
