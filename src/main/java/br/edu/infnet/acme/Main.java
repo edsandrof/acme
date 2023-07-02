@@ -1,5 +1,6 @@
 package br.edu.infnet.acme;
 
+import br.edu.infnet.acme.domain.service.Exercise3Service;
 import br.edu.infnet.acme.domain.service.ExerciseList1Service;
 import br.edu.infnet.acme.domain.service.ExerciseList2Service;
 import lombok.extern.slf4j.Slf4j;
@@ -13,5 +14,8 @@ public class Main {
 
         log.info(" --- Exercise list 2 --- ");
         ExerciseList2Service.runExerciseList2();
+
+        log.info(" --- Exercise list 3 --- ");
+        Exercise3Service.runExercise3();
     }
 }
