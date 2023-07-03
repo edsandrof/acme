@@ -1,8 +1,10 @@
 package br.edu.infnet.acme.domain.service;
 
+import br.edu.infnet.acme.application.exception.CarBuyerRegisterException;
 import br.edu.infnet.acme.domain.model.Car;
 import br.edu.infnet.acme.domain.model.CarBuyer;
 import br.edu.infnet.acme.domain.model.DriveLicense;
+import br.edu.infnet.acme.domain.validator.CarBuyerValidator;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -22,6 +24,14 @@ public class Exercise3Service {
 
         System.out.println("Starting buying a car...");
         CarService carService = new CarService();
-        carService.buyCar(ferrari, buyer);
+
+        CarBuyerValidator carBuyerValidator = new CarBuyerValidator();
+        boolean isValid = carBuyerValidator.validateCarBuyer(buyer);
+
+        if (isValid) {
+            carService.buyCar(ferrari, buyer);
+        } else {
+            throw new CarBuyerRegisterException("Error in car buyer validation");
+        }
     }
 }
