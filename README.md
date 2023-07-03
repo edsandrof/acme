@@ -2,6 +2,6 @@ Infnet - Clean Code e Padrões de Projeto - Prof. Leonardo da Gloria
 
 Aluno: Edsandro Freitas
 
-Entrega 2 - Refatore o seu código para deixá-lo orientado a objetos.
+Entrega 3 - Escolha um padrão de projeto e implemente
 
-Implemente um projeto JAVA de uma Loja virtual ACME que vende downloads de músicas, videos e imagens.
+Escolha: Chain of responsability, usado em validação de objetos
